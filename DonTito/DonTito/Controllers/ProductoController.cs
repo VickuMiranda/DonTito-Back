@@ -34,10 +34,17 @@ namespace DonTito.Controllers
         }
 
         //Buscar Por modelo
-        [HttpGet("api/v1/producto/buscarmodelo/{model}")]
-        public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string model)
+        [HttpGet("api/v1/producto/buscarModelo/{modelo}")]
+        public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
         {
-            return await _service.GetProductoByModelo(model);
+            return await _service.GetProductoByModelo(modelo);
+        }
+
+        //Buscar por Marca
+        [HttpGet("api/v1/producto/buscarMarca/{marca}")]
+        public async Task<IEnumerable<ProductoDtoOut>> GetProductoByMarca(string marca)
+        {
+            return await _service.GetProductoByMarca(marca);
         }
 
 
