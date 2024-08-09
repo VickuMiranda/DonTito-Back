@@ -52,13 +52,22 @@ namespace Services.Services
         }
         public async Task<Producto> Create(ProductoDtoIn newProductoDto)
         {
-            var newProducto = new Producto();
+            // Verifica si ya existe un producto con el mismo nombre
+            var existe = GetProductoByNombre(newProductoDto.Nombre);
+            if (existe is not null)
+            {
+                return existe;
+            }
 
-            newProducto.Nombre = newProductoDto.Nombre;
-            newProducto.Precio = newProductoDto.Precio;
-            newProducto.Codigo = newProductoDto.Codigo;
-            newProducto.Descripcion = newProductoDto.Descripcion;
-            newProducto.IdModelo = newProductoDto.IdModelo;
+            // Si no existe, crea un nuevo producto
+            var newProducto = new Producto
+            {
+                Nombre = newProductoDto.Nombre,
+                Precio = newProductoDto.Precio,
+                Codigo = newProductoDto.Codigo,
+                Descripcion = newProductoDto.Descripcion,
+                IdModelo = newProductoDto.IdModelo
+            };
 
             _context.Producto.Add(newProducto);
             await _context.SaveChangesAsync();
@@ -66,8 +75,10 @@ namespace Services.Services
             return newProducto;
         }
 
+
         public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
         {
+
             return await _context.Producto
                 .Where(p => p.IdModeloNavigation.Nombre == modelo)
                 .Select(p => new ProductoDtoOut
@@ -82,6 +93,21 @@ namespace Services.Services
                 }).ToArrayAsync();
         }
 
+        public async Task<IEnumerable<ProductoDtoOut?>> GetProductoByNombre(string nombre)
+        {
+            return await _context.Producto
+                .Where(p => p.Nombre == nombre)
+                .Select(p => new ProductoDtoOut
+                {
+                    Id = p.Id,
+                    Nombre = p.Nombre,
+                    Precio = p.Precio,
+                    Codigo = p.Codigo,
+                    Descripcion = p.Descripcion,
+                    NombreModelo = p.IdModeloNavigation.Nombre
+
+                }).ToArrayAsync();
+        }
         public async Task<IEnumerable<ProductoDtoOut>> GetProductoByMarca(string marca)
         {
             return await _context.Producto

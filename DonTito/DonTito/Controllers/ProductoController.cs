@@ -46,15 +46,22 @@ namespace DonTito.Controllers
         {
             return await _service.GetProductoByMarca(marca);
         }
-
+        [HttpGet("api/v1/producto/buscarNombre/{nombre}")]
+        public async Task<IEnumerable<ProductoDtoOut?>> GetProductoByNombre(string nombre)
+        {
+            return await _service.GetProductoByNombre(nombre);
+        }
 
         //AGREGAR
         [HttpPost("api/v1/agregar/producto")]
         public async Task<IActionResult> Create(ProductoDtoIn productoDtoIn)
         {
+            
+            
             var newProducto = await _service.Create(productoDtoIn);
-
             return CreatedAtAction(nameof(GetProductoDtoById), new { id = newProducto.Id }, newProducto);
+            
+
         }
 
 
