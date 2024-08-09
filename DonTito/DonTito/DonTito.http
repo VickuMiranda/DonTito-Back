@@ -1,0 +1,6 @@
+@DonTito_HostAddress = http://localhost:5291
+
+GET {{DonTito_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
