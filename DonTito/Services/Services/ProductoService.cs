@@ -66,6 +66,20 @@ namespace Services.Services
             return newProducto;
         }
 
+        public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
+        {
+            return await _context.Producto
+                .Where(p => p.IdModeloNavigation.Nombre == modelo)
+                .Select(p => new ProductoDtoOut
+                {
+                    Id = p.Id,
+                    Nombre = p.Nombre,
+                    Precio = p.Precio,
+                    Codigo = p.Codigo,
+                    Descripcion = p.Descripcion,
+                    NombreModelo = p.IdModeloNavigation.Nombre
+                }).ToArrayAsync();
+        }
 
         public async Task Update(int id, ProductoDtoIn productoDtoIn)
         {

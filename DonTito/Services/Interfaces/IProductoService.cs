@@ -10,6 +10,7 @@ namespace Services.Interfaces
         Task<ProductoDtoOut?> GetProductoDtoById(int id);
         Task<Producto> Create(ProductoDtoIn newProducto);
         Task<Producto?> GetById(int id);
+        Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo);
         Task Update(int id, ProductoDtoIn productoDtoIn);
         Task Delete(int id);
     }

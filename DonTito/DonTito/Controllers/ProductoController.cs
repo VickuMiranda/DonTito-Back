@@ -33,6 +33,13 @@ namespace DonTito.Controllers
             return producto;
         }
 
+        //Buscar Por modelo
+        [HttpGet("api/v1/producto/buscarmodelo/{model}")]
+        public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string model)
+        {
+            return await _service.GetProductoByModelo(model);
+        }
+
 
         //AGREGAR
         [HttpPost("api/v1/agregar/producto")]
