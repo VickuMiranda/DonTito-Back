@@ -52,10 +52,11 @@ namespace Services.Services
         }
         public async Task<Producto> Create(ProductoDtoIn newProductoDto)
         {
-            // Verifica si ya existe un producto con el mismo nombre
-            var existe = GetProductoByNombre(newProductoDto.Nombre);
-            if (existe is not null)
+            var productoDto = await GetProductoByNombre(newProductoDto.Nombre);
+            if (productoDto is not null)
             {
+                // Aquí necesitas convertir ProductoDtoOut a Producto si es necesario
+                var existe = await _context.Producto.FindAsync(productoDto.Id);
                 return existe;
             }
 
@@ -93,8 +94,9 @@ namespace Services.Services
                 }).ToArrayAsync();
         }
 
-        public async Task<IEnumerable<ProductoDtoOut?>> GetProductoByNombre(string nombre)
+        public async Task<ProductoDtoOut?> GetProductoByNombre(string nombre)
         {
+
             return await _context.Producto
                 .Where(p => p.Nombre == nombre)
                 .Select(p => new ProductoDtoOut
@@ -106,7 +108,7 @@ namespace Services.Services
                     Descripcion = p.Descripcion,
                     NombreModelo = p.IdModeloNavigation.Nombre
 
-                }).ToArrayAsync();
+                }).SingleOrDefaultAsync();
         }
         public async Task<IEnumerable<ProductoDtoOut>> GetProductoByMarca(string marca)
         {

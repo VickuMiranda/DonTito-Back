@@ -47,7 +47,7 @@ namespace DonTito.Controllers
             return await _service.GetProductoByMarca(marca);
         }
         [HttpGet("api/v1/producto/buscarNombre/{nombre}")]
-        public async Task<IEnumerable<ProductoDtoOut?>> GetProductoByNombre(string nombre)
+        public async Task<ProductoDtoOut?> GetProductoByNombre(string nombre)
         {
             return await _service.GetProductoByNombre(nombre);
         }
