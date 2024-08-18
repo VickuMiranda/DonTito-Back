@@ -50,21 +50,48 @@ namespace Services.Services
         {
             return await _context.Pedido.FindAsync(id);
         }
+        //public async Task<Pedido> Create(PedidoDtoIn newPedidoDto)
+        //{
+        //    var newPedido = new Pedido();
+
+        //    newPedido.Total = newPedidoDto.Total;
+        //    newPedido.FechaCreacion = newPedidoDto.FechaCreacion;
+        //    newPedido.IdCliente = newPedidoDto.IdCliente;
+        //    newPedido.IdFactura = newPedidoDto.IdFactura;
+
+        //    _context.Pedido.Add(newPedido);
+        //    await _context.SaveChangesAsync();
+
+        //    return newPedido;
+
+        //}
         public async Task<Pedido> Create(PedidoDtoIn newPedidoDto)
         {
-            var newPedido = new Pedido();
+            var newPedido = new Pedido
+            {
+                FechaCreacion = newPedidoDto.FechaCreacion,
+                IdCliente = newPedidoDto.IdCliente,
+                IdFactura = newPedidoDto.IdFactura
+            };
 
-            newPedido.Total = newPedidoDto.Total;
-            newPedido.FechaCreacion = newPedidoDto.FechaCreacion;
-            newPedido.IdCliente = newPedidoDto.IdCliente;
-            newPedido.IdFactura = newPedidoDto.IdFactura;
-
+            // Agregar el nuevo pedido a la base de datos
             _context.Pedido.Add(newPedido);
             await _context.SaveChangesAsync();
 
-            return newPedido;
+            // Obtener los detalles de pedido asociados a este nuevo pedido
+            var pedidoDetalles = await _context.PedidoDetalle
+                .Where(pd => pd.IdPedido == newPedido.Id)
+                .ToListAsync();
 
+            // Calcular el total sumando los subtotales de los detalles del pedido
+            newPedido.Total = pedidoDetalles.Sum(pd => pd.SubTotal);
+
+            // Guardar el cambio del total en la base de datos
+            await _context.SaveChangesAsync();
+
+            return newPedido;
         }
+
 
 
         public async Task Update(int id, PedidoDtoIn pedidoDtoIn)

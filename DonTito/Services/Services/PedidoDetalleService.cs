@@ -14,6 +14,7 @@ namespace Services.Services
     {
         private readonly DonTitoContext _context;
 
+
         public PedidoDetalleService(DonTitoContext context)
         {
             _context = context;
@@ -50,6 +51,22 @@ namespace Services.Services
             return await _context.PedidoDetalle.FindAsync(id);
         }
 
+        //public async Task<PedidoDetalle> Create(PedidoDetalleDtoIn newPedidoDetalleDto)
+        //{
+        //    var precioProducto = await ObtenerPrecioProducto(newPedidoDetalleDto.IdProducto);
+        //    var newPedidoDetalle = new PedidoDetalle
+        //    {
+        //        Cantidad = newPedidoDetalleDto.Cantidad,
+        //        IdProducto = newPedidoDetalleDto.IdProducto,
+        //        IdPedido = newPedidoDetalleDto.IdPedido,
+        //        SubTotal = newPedidoDetalleDto.Cantidad * precioProducto
+        //    };
+
+        //    _context.PedidoDetalle.Add(newPedidoDetalle);
+        //    await _context.SaveChangesAsync();
+
+        //    return newPedidoDetalle;
+        //}
         public async Task<PedidoDetalle> Create(PedidoDetalleDtoIn newPedidoDetalleDto)
         {
             var precioProducto = await ObtenerPrecioProducto(newPedidoDetalleDto.IdProducto);
@@ -61,11 +78,35 @@ namespace Services.Services
                 SubTotal = newPedidoDetalleDto.Cantidad * precioProducto
             };
 
+            // Agregar el nuevo detalle de pedido a la base de datos
             _context.PedidoDetalle.Add(newPedidoDetalle);
             await _context.SaveChangesAsync();
 
+            // Actualizar el total del pedido al que pertenece este detalle
+            await ActualizarTotalPedido(newPedidoDetalle.IdPedido);
+
             return newPedidoDetalle;
         }
+
+        private async Task ActualizarTotalPedido(int idPedido)
+        {
+            // Obtener todos los detalles asociados al pedido
+            var pedidoDetalles = await _context.PedidoDetalle
+                .Where(pd => pd.IdPedido == idPedido)
+                .ToListAsync();
+
+            // Calcular el nuevo total sumando los subtotales de los detalles
+            var nuevoTotal = pedidoDetalles.Sum(pd => pd.SubTotal);
+
+            // Obtener el pedido y actualizar su total
+            var pedido = await _context.Pedido.FindAsync(idPedido);
+            if (pedido != null)
+            {
+                pedido.Total = nuevoTotal;
+                await _context.SaveChangesAsync();
+            }
+        }
+
 
         private async Task<float> ObtenerPrecioProducto(int idProducto)
         {
