@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace Models.Models;
 
 public partial class Pedido
@@ -15,14 +14,6 @@ public partial class Pedido
     public float Total { get; set; }
 
     public DateTime FechaCreacion { get; set; }
-
-    public int IdCliente { get; set; }
-
-    public int IdFactura { get; set; }
-
-    public virtual Usuario IdClienteNavigation { get; set; }
-
-    public virtual Factura IdFacturaNavigation { get; set; }
 
     public virtual ICollection<PedidoDetalle> PedidoDetalle { get; set; } = new List<PedidoDetalle>();
 }

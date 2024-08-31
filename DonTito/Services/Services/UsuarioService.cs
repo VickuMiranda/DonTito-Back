@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Request;
+﻿using Core.Request;
 using Core.Response;
 using Models.Models;
 using Microsoft.EntityFrameworkCore;
@@ -23,14 +18,8 @@ namespace Services.Services
             return await _context.Usuario.Select(u => new UsuarioDtoOut
             {
                 Id = u.Id,
-                Nombre = u.Nombre,
-                Apellido = u.Apellido,
                 Email = u.Email,
-                Dni = u.Dni,
-                Telefono = u.Telefono,
-                Contrasenia = u.Contrasenia,
-                NombreRol = u.IdRolNavigation.Nombre,
-                IdDomicilio = u.IdDomicilioNavigation.Id
+                Contrasenia = u.Contrasenia
             }).ToArrayAsync();
         }
 
@@ -41,14 +30,8 @@ namespace Services.Services
                 .Select(u => new UsuarioDtoOut
                 {
                     Id = u.Id,
-                    Nombre = u.Nombre,
-                    Apellido = u.Apellido, 
                     Email = u.Email,
-                    Dni = u.Dni,
-                    Telefono = u.Telefono,
-                    Contrasenia = u.Contrasenia,
-                    NombreRol = u.IdRolNavigation.Nombre,
-                    IdDomicilio = u.IdDomicilioNavigation.Id
+                    Contrasenia = u.Contrasenia
                 }).SingleOrDefaultAsync();
         }
 
@@ -60,14 +43,8 @@ namespace Services.Services
         {
             var newUsuario = new Usuario();
 
-            newUsuario.Nombre = newUsuarioDto.Nombre;
-            newUsuario.Apellido = newUsuarioDto.Apellido;
             newUsuario.Email = newUsuarioDto.Email;
-            newUsuario.Dni = newUsuarioDto.Dni;
-            newUsuario.Telefono = newUsuarioDto.Telefono;
             newUsuario.Contrasenia = newUsuarioDto.Contrasenia;
-            newUsuario.IdRol = newUsuarioDto.IdRol;
-            newUsuario.IdDomicilio = newUsuarioDto.IdDomicilio;
 
             _context.Usuario.Add(newUsuario);
             await _context.SaveChangesAsync();
@@ -82,14 +59,8 @@ namespace Services.Services
             var existingUsuario = await GetById(id);
             if (existingUsuario is not null)
             {
-                existingUsuario.Nombre = usuarioDtoIn.Nombre;
-                existingUsuario.Apellido=usuarioDtoIn.Apellido;
                 existingUsuario.Email = usuarioDtoIn.Email;
-                existingUsuario.Dni = usuarioDtoIn.Dni;
-                existingUsuario.Telefono = usuarioDtoIn.Telefono;
                 existingUsuario.Contrasenia = usuarioDtoIn.Contrasenia;
-                existingUsuario.IdRol = usuarioDtoIn.IdRol;
-                existingUsuario.IdDomicilio = usuarioDtoIn.IdDomicilio;
                 await _context.SaveChangesAsync();
             }
         }

@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 namespace Models.Models;
 
-public partial class Rol
+public partial class Imagen
 {
     public int Id { get; set; }
 
-    public string Nombre { get; set; }
+    public byte[] Imagen1 { get; set; }
 
-    public virtual ICollection<Usuario> Usuario { get; set; } = new List<Usuario>();
+    public int IdProducto { get; set; }
+
+    public virtual Producto IdProductoNavigation { get; set; }
 }

@@ -18,6 +18,8 @@ namespace Core.Request
 
         public string? Descripcion { get; set; }
 
+        public int IdImagen { get; set; } //Revisar
+
         public int IdModelo { get; set; }
     }
 }

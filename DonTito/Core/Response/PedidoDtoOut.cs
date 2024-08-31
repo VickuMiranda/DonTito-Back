@@ -16,9 +16,5 @@ namespace Core.Response
         public float Total { get; set; }
 
         public DateTime FechaCreacion { get; set; }
-
-        public string? NombreCliente { get; set; }
-
-        public long NumeroFactura { get; set; }
     }
 }

@@ -13,9 +13,7 @@ public partial class DonTitoContext : DbContext
     {
     }
 
-    public virtual DbSet<Domicilio> Domicilio { get; set; }
-
-    public virtual DbSet<Factura> Factura { get; set; }
+    public virtual DbSet<Imagen> Imagen { get; set; }
 
     public virtual DbSet<Marca> Marca { get; set; }
 
@@ -27,51 +25,27 @@ public partial class DonTitoContext : DbContext
 
     public virtual DbSet<Producto> Producto { get; set; }
 
-    public virtual DbSet<Provincia> Provincia { get; set; }
-
-    public virtual DbSet<Rol> Rol { get; set; }
-
     public virtual DbSet<Usuario> Usuario { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Domicilio>(entity =>
+        modelBuilder.Entity<Imagen>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("Domicilio_pkey");
+            entity.HasKey(e => e.Id).HasName("Imagen_pkey");
 
             entity.Property(e => e.Id)
                 .UseIdentityAlwaysColumn()
-                .HasIdentityOptions(null, null, null, 99999L, null, null)
+                .HasIdentityOptions(null, null, null, 999999L, null, null)
                 .HasColumnName("id");
-            entity.Property(e => e.Calle)
+            entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+            entity.Property(e => e.Imagen1)
                 .IsRequired()
-                .HasColumnName("calle");
-            entity.Property(e => e.Departamento).HasColumnName("departamento");
-            entity.Property(e => e.IdProvincia).HasColumnName("idProvincia");
-            entity.Property(e => e.Numero).HasColumnName("numero");
-            entity.Property(e => e.Piso).HasColumnName("piso");
+                .HasColumnName("imagen");
 
-            entity.HasOne(d => d.IdProvinciaNavigation).WithMany(p => p.Domicilio)
-                .HasForeignKey(d => d.IdProvincia)
+            entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.Imagen)
+                .HasForeignKey(d => d.IdProducto)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("idProvincia");
-        });
-
-        modelBuilder.Entity<Factura>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("Factura_pkey");
-
-            entity.Property(e => e.Id)
-                .UseIdentityAlwaysColumn()
-                .HasIdentityOptions(null, null, null, 99999L, null, null)
-                .HasColumnName("id");
-            entity.Property(e => e.Fecha).HasColumnName("fecha");
-            entity.Property(e => e.MontoTotal).HasColumnName("montoTotal");
-            entity.Property(e => e.Numero)
-                .ValueGeneratedOnAdd()
-                .UseIdentityAlwaysColumn()
-                .HasIdentityOptions(100L, null, null, 9999999999L, null, null)
-                .HasColumnName("numero");
+                .HasConstraintName("idProducto");
         });
 
         modelBuilder.Entity<Marca>(entity =>
@@ -115,24 +89,12 @@ public partial class DonTitoContext : DbContext
                 .HasIdentityOptions(null, null, null, 99999L, null, null)
                 .HasColumnName("id");
             entity.Property(e => e.FechaCreacion).HasColumnName("fechaCreacion");
-            entity.Property(e => e.IdCliente).HasColumnName("idCliente");
-            entity.Property(e => e.IdFactura).HasColumnName("idFactura");
             entity.Property(e => e.Numero)
                 .ValueGeneratedOnAdd()
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(100L, null, null, 9999999999L, null, null)
                 .HasColumnName("numero");
             entity.Property(e => e.Total).HasColumnName("total");
-
-            entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Pedido)
-                .HasForeignKey(d => d.IdCliente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("idCliente");
-
-            entity.HasOne(d => d.IdFacturaNavigation).WithMany(p => p.Pedido)
-                .HasForeignKey(d => d.IdFactura)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("idFactura");
         });
 
         modelBuilder.Entity<PedidoDetalle>(entity =>
@@ -183,32 +145,6 @@ public partial class DonTitoContext : DbContext
                 .HasConstraintName("idModelo");
         });
 
-        modelBuilder.Entity<Provincia>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("Localidad _pkey");
-
-            entity.Property(e => e.Id)
-                .UseIdentityAlwaysColumn()
-                .HasIdentityOptions(null, null, null, 99999L, null, null)
-                .HasColumnName("id");
-            entity.Property(e => e.Nombre)
-                .IsRequired()
-                .HasColumnName("nombre");
-        });
-
-        modelBuilder.Entity<Rol>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("Rol_pkey");
-
-            entity.Property(e => e.Id)
-                .UseIdentityAlwaysColumn()
-                .HasIdentityOptions(null, null, null, 99999L, null, null)
-                .HasColumnName("id");
-            entity.Property(e => e.Nombre)
-                .IsRequired()
-                .HasColumnName("nombre");
-        });
-
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Usuario_pkey");
@@ -217,32 +153,12 @@ public partial class DonTitoContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 99999L, null, null)
                 .HasColumnName("id");
-            entity.Property(e => e.Apellido)
-                .IsRequired()
-                .HasColumnName("apellido");
             entity.Property(e => e.Contrasenia)
                 .IsRequired()
                 .HasColumnName("contrasenia");
-            entity.Property(e => e.Dni).HasColumnName("dni");
             entity.Property(e => e.Email)
                 .IsRequired()
                 .HasColumnName("email");
-            entity.Property(e => e.IdDomicilio).HasColumnName("idDomicilio");
-            entity.Property(e => e.IdRol).HasColumnName("idRol");
-            entity.Property(e => e.Nombre)
-                .IsRequired()
-                .HasColumnName("nombre");
-            entity.Property(e => e.Telefono).HasColumnName("telefono");
-
-            entity.HasOne(d => d.IdDomicilioNavigation).WithMany(p => p.Usuario)
-                .HasForeignKey(d => d.IdDomicilio)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("idDomicilio");
-
-            entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.Usuario)
-                .HasForeignKey(d => d.IdRol)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("idRol");
         });
 
         OnModelCreatingPartial(modelBuilder);

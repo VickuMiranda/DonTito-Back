@@ -15,11 +15,7 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "public.Domicilio",
-         "ObjectType": 0
-      },
-      {
-         "Name": "public.Factura",
+         "Name": "public.Imagen",
          "ObjectType": 0
       },
       {
@@ -40,14 +36,6 @@
       },
       {
          "Name": "public.Producto",
-         "ObjectType": 0
-      },
-      {
-         "Name": "public.Provincia",
-         "ObjectType": 0
-      },
-      {
-         "Name": "public.Rol",
          "ObjectType": 0
       },
       {

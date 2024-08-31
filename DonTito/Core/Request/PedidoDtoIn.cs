@@ -16,8 +16,5 @@ namespace Core.Request
         public float Total { get; set; }
 
         public DateTime FechaCreacion { get; set; }
-
-        public int IdCliente { get; set; }
-        public int IdFactura { get; set; }
     }
 }

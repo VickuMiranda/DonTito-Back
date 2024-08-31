@@ -25,9 +25,7 @@ namespace Services.Services
                 Id = p.Id,
                 Numero = p.Numero,
                 Total = p.Total,
-                FechaCreacion = p.FechaCreacion,
-                NombreCliente = p.IdClienteNavigation.Nombre,
-                NumeroFactura = p.IdFacturaNavigation.Numero,
+                FechaCreacion = p.FechaCreacion
             }).ToArrayAsync();
         }
 
@@ -40,9 +38,7 @@ namespace Services.Services
                     Id = p.Id,
                     Numero = p.Numero,
                     Total = p.Total,
-                    FechaCreacion = p.FechaCreacion,
-                    NombreCliente = p.IdClienteNavigation.Nombre,
-                    NumeroFactura = p.IdFacturaNavigation.Numero,
+                    FechaCreacion = p.FechaCreacion
                 }).SingleOrDefaultAsync();
         }
 
@@ -50,28 +46,11 @@ namespace Services.Services
         {
             return await _context.Pedido.FindAsync(id);
         }
-        //public async Task<Pedido> Create(PedidoDtoIn newPedidoDto)
-        //{
-        //    var newPedido = new Pedido();
-
-        //    newPedido.Total = newPedidoDto.Total;
-        //    newPedido.FechaCreacion = newPedidoDto.FechaCreacion;
-        //    newPedido.IdCliente = newPedidoDto.IdCliente;
-        //    newPedido.IdFactura = newPedidoDto.IdFactura;
-
-        //    _context.Pedido.Add(newPedido);
-        //    await _context.SaveChangesAsync();
-
-        //    return newPedido;
-
-        //}
         public async Task<Pedido> Create(PedidoDtoIn newPedidoDto)
         {
             var newPedido = new Pedido
             {
-                FechaCreacion = newPedidoDto.FechaCreacion,
-                IdCliente = newPedidoDto.IdCliente,
-                IdFactura = newPedidoDto.IdFactura
+                FechaCreacion = DateTime.Now,
             };
 
             // Agregar el nuevo pedido a la base de datos
@@ -93,7 +72,6 @@ namespace Services.Services
         }
 
 
-
         public async Task Update(int id, PedidoDtoIn pedidoDtoIn)
         {
             var existingPedido = await GetById(id);
@@ -102,8 +80,6 @@ namespace Services.Services
                 existingPedido.Numero = pedidoDtoIn.Numero;
                 existingPedido.Total = pedidoDtoIn.Total;
                 existingPedido.FechaCreacion = pedidoDtoIn.FechaCreacion;
-                existingPedido.IdCliente = pedidoDtoIn .IdCliente;
-                existingPedido.IdFactura = pedidoDtoIn .IdFactura;
                 await _context.SaveChangesAsync();
             }
         }
