@@ -38,16 +38,11 @@ option.UseNpgsql(builder.Configuration.GetConnectionString("Conection")));
 
 //MANEJADOR DE INTERFACES
 
-builder.Services.AddScoped<IDomicilioService, DomicilioService>();
-
-builder.Services.AddScoped<IFacturaService, FacturaService>();
 builder.Services.AddScoped<IMarcaService, MarcaService>();
 builder.Services.AddScoped<IModeloService, ModeloService>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 builder.Services.AddScoped<IPedidoDetalleService, PedidoDetalleService>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
-builder.Services.AddScoped<IProvinciaService, ProvinciaService>();
-builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 
