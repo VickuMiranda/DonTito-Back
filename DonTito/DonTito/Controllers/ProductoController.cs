@@ -1,6 +1,5 @@
 ﻿using Core.Request;
 using Core.Response;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -54,14 +53,10 @@ namespace DonTito.Controllers
 
         //AGREGAR
         [HttpPost("api/v1/agregar/producto")]
-        public async Task<IActionResult> Create(ProductoDtoIn productoDtoIn)
-        {
-            
-            
+        public async Task<IActionResult> Create([FromForm] ProductoDtoIn productoDtoIn)
+        {        
             var newProducto = await _service.Create(productoDtoIn);
             return CreatedAtAction(nameof(GetProductoDtoById), new { id = newProducto.Id }, newProducto);
-            
-
         }
 
 

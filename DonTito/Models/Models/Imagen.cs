@@ -9,7 +9,7 @@ public partial class Imagen
 {
     public int Id { get; set; }
 
-    public byte[] Imagen1 { get; set; }
+    public List<byte[]> Url { get; set; }
 
     public int IdProducto { get; set; }
 

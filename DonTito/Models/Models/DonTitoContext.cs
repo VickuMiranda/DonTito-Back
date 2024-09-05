@@ -31,16 +31,16 @@ public partial class DonTitoContext : DbContext
     {
         modelBuilder.Entity<Imagen>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("Imagen_pkey");
+            entity.HasKey(e => e.Id).HasName("imagen_pkey");
 
             entity.Property(e => e.Id)
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 999999L, null, null)
                 .HasColumnName("id");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
-            entity.Property(e => e.Imagen1)
+            entity.Property(e => e.Url)
                 .IsRequired()
-                .HasColumnName("imagen");
+                .HasColumnName("url");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.Imagen)
                 .HasForeignKey(d => d.IdProducto)
