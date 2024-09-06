@@ -32,11 +32,11 @@ namespace PruebaImagen.Controllers
 
         [HttpPost]
         [Route("subir")]
-        public async Task<IActionResult> SubirImagenes(List<IFormFile> files, int idPerfil)
+        public async Task<IActionResult> SubirImagenes(List<IFormFile> files, int idProducto)
         {
             try
             {
-                var imagenId = await _service.SubirImagenes(files, idPerfil);
+                var imagenId = await _service.SubirImagenes(files, idProducto);
                 return Ok(new { Id = imagenId });
             }
             catch (ArgumentException ex)

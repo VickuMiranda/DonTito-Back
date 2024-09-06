@@ -24,7 +24,7 @@ namespace Services
                 {
                     Id = p.Id,
                     Url = p.Url,
-                    NombreProducto = p.IdProductoNavigation.Descripcion,
+                    NombreProducto = p.IdProductoNavigation.Nombre,
 
 
                 }).SingleOrDefaultAsync();
