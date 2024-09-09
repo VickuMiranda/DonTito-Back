@@ -55,7 +55,8 @@ namespace DonTito.Controllers
 
         //AGREGAR
          [HttpPost("api/v1/agregar/producto")]
-         public async Task<IActionResult> Create([FromForm] ProductoDtoIn productoDtoIn, IFormFile files)
+        [RequestSizeLimit(1_000_000)]
+        public async Task<IActionResult> Create([FromForm] ProductoDtoIn productoDtoIn, IFormFile files)
          {        
            var newProducto = await _service.Create(productoDtoIn, files);
          return CreatedAtAction(nameof(GetProductoDtoById), new { id = newProducto.Id }, newProducto);

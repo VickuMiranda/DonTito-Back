@@ -56,36 +56,40 @@ namespace Services.Services
         }
         public async Task<Producto> Create(ProductoDtoIn newProductoDto, IFormFile files)
         {
-            var productoDto = await GetProductoByNombre(newProductoDto.Nombre);
-            if (productoDto is not null)
+
+            var productoExistente = await GetProductoByNombre(newProductoDto.Nombre);
+            if (productoExistente != null)
             {
-                var existe = await _context.Producto.FindAsync(productoDto.Id);
-                return existe;
+                // Si el producto ya existe, retorna el producto encontrado
+                return await _context.Producto.FindAsync(productoExistente.Id);
             }
 
+            // Valida si se ha proporcionado un archivo de imagen
             if (files == null || files.Length == 0)
             {
                 throw new ArgumentException("No se han proporcionado imágenes.");
             }
 
-            using var memoryStream = new MemoryStream();
-            await files.CopyToAsync(memoryStream);
+            // Convierte el archivo de imagen a un array de bytes
+            byte[] imageBytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                await files.CopyToAsync(memoryStream);
+                imageBytes = memoryStream.ToArray();
+            }
 
-            //MemoryStream: Crea un flujo de memoria(MemoryStream) para leer el contenido del archivo.
-            //CopyToAsync: Copia de manera asíncrona los datos del archivo en el flujo de memoria.
-            //ToArray: Convierte el contenido del flujo de memoria a un array de bytes.
-
-
+            // Crea un nuevo producto
             var newProducto = new Producto
             {
                 Nombre = newProductoDto.Nombre,
                 Precio = newProductoDto.Precio,
                 Codigo = newProductoDto.Codigo,
                 Descripcion = newProductoDto.Descripcion,
-                Imagen = memoryStream.ToArray(),
-                IdModelo = newProductoDto.IdModelo
+                Imagen = imageBytes,  // Asigna el array de bytes de la imagen
+                IdModelo = newProductoDto.IdModelo,
             };
 
+            // Agrega el nuevo producto a la base de datos y guarda los cambios
             _context.Producto.Add(newProducto);
             await _context.SaveChangesAsync();
 
@@ -93,7 +97,9 @@ namespace Services.Services
         }
 
 
-        public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
+
+
+            public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
         {
 
             return await _context.Producto
