@@ -1,5 +1,6 @@
 ﻿using Core.Request;
 using Core.Response;
+using Microsoft.AspNetCore.Http;
 using Models.Models;
 
 namespace Services.Interfaces
@@ -8,7 +9,7 @@ namespace Services.Interfaces
     {
         Task<IEnumerable<ProductoDtoOut>> GetProducto();
         Task<ProductoDtoOut?> GetProductoDtoById(int id);
-        Task<Producto> Create(ProductoDtoIn newProducto);
+        Task<Producto> Create(ProductoDtoIn newProducto, IFormFile files);
         Task<Producto?> GetById(int id);
         Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo);
         Task<ProductoDtoOut?> GetProductoByNombre(string nombre);

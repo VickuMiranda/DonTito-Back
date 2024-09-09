@@ -19,9 +19,9 @@ public partial class Producto
 
     public int IdModelo { get; set; }
 
-    public virtual Modelo IdModeloNavigation { get; set; }
+    public byte[] Imagen { get; set; }
 
-    public virtual ICollection<Imagen> Imagen { get; set; } = new List<Imagen>();
+    public virtual Modelo IdModeloNavigation { get; set; }
 
     public virtual ICollection<PedidoDetalle> PedidoDetalle { get; set; } = new List<PedidoDetalle>();
 }

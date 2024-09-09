@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Request
+﻿namespace Core.Request
 {
     public class ProductoDtoIn
     {
-        public int Id { get; set; }
-
         public string? Nombre { get; set; }
 
         public float Precio { get; set; }
@@ -18,7 +10,7 @@ namespace Core.Request
 
         public string? Descripcion { get; set; }
 
-        public int IdImagen { get; set; } //Revisar
+        public byte[]? Imagen { get; set; }
 
         public int IdModelo { get; set; }
     }

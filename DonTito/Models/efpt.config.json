@@ -15,10 +15,6 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "public.Imagen",
-         "ObjectType": 0
-      },
-      {
          "Name": "public.Marca",
          "ObjectType": 0
       },

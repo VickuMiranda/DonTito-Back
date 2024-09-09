@@ -51,21 +51,23 @@ namespace DonTito.Controllers
             return await _service.GetProductoByNombre(nombre);
         }
 
+
+
         //AGREGAR
-        [HttpPost("api/v1/agregar/producto")]
-        public async Task<IActionResult> Create([FromForm] ProductoDtoIn productoDtoIn)
-        {        
-            var newProducto = await _service.Create(productoDtoIn);
-            return CreatedAtAction(nameof(GetProductoDtoById), new { id = newProducto.Id }, newProducto);
-        }
+         [HttpPost("api/v1/agregar/producto")]
+         public async Task<IActionResult> Create([FromForm] ProductoDtoIn productoDtoIn, IFormFile files)
+         {        
+           var newProducto = await _service.Create(productoDtoIn, files);
+         return CreatedAtAction(nameof(GetProductoDtoById), new { id = newProducto.Id }, newProducto);
+         }
 
 
         //EDITAR
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, ProductoDtoIn productoDtoIn)
         {
-            if (id != productoDtoIn.Id)
-                return BadRequest(new { message = $"El ID = {id} de la URL no coincide con el ID({productoDtoIn.Id}) del cuerpo de la solicitud." });
+            //if (id != productoDtoIn.Id)
+            //    return BadRequest(new { message = $"El ID = {id} de la URL no coincide con el ID({productoDtoIn.Id}) del cuerpo de la solicitud." });
 
             var productoToUpdate = await _service.GetProductoDtoById(id);
 

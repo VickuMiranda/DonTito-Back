@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Request;
 using Core.Response;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
 using Services.Interfaces;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Services.Services
 {
@@ -27,6 +29,7 @@ namespace Services.Services
                 Precio = p.Precio,
                 Codigo = p.Codigo,
                 Descripcion = p.Descripcion,
+                Imagen = p.Imagen,
                 NombreModelo = p.IdModeloNavigation.Nombre
             }).ToArrayAsync();
         }
@@ -42,6 +45,7 @@ namespace Services.Services
                     Precio = p.Precio,
                     Codigo = p.Codigo,
                     Descripcion = p.Descripcion,
+                    Imagen = p.Imagen,
                     NombreModelo = p.IdModeloNavigation.Nombre
                 }).SingleOrDefaultAsync();
         }
@@ -50,23 +54,35 @@ namespace Services.Services
         {
             return await _context.Producto.FindAsync(id);
         }
-        public async Task<Producto> Create(ProductoDtoIn newProductoDto)
+        public async Task<Producto> Create(ProductoDtoIn newProductoDto, IFormFile files)
         {
             var productoDto = await GetProductoByNombre(newProductoDto.Nombre);
             if (productoDto is not null)
             {
-                // Aquí necesitas convertir ProductoDtoOut a Producto si es necesario
                 var existe = await _context.Producto.FindAsync(productoDto.Id);
                 return existe;
             }
 
-            // Si no existe, crea un nuevo producto
+            if (files == null || files.Length == 0)
+            {
+                throw new ArgumentException("No se han proporcionado imágenes.");
+            }
+
+            using var memoryStream = new MemoryStream();
+            await files.CopyToAsync(memoryStream);
+
+            //MemoryStream: Crea un flujo de memoria(MemoryStream) para leer el contenido del archivo.
+            //CopyToAsync: Copia de manera asíncrona los datos del archivo en el flujo de memoria.
+            //ToArray: Convierte el contenido del flujo de memoria a un array de bytes.
+
+
             var newProducto = new Producto
             {
                 Nombre = newProductoDto.Nombre,
                 Precio = newProductoDto.Precio,
                 Codigo = newProductoDto.Codigo,
                 Descripcion = newProductoDto.Descripcion,
+                Imagen = memoryStream.ToArray(),
                 IdModelo = newProductoDto.IdModelo
             };
 
@@ -89,6 +105,7 @@ namespace Services.Services
                     Precio = p.Precio,
                     Codigo = p.Codigo,
                     Descripcion = p.Descripcion,
+                    Imagen = p.Imagen,
                     NombreModelo = p.IdModeloNavigation.Nombre
 
                 }).ToArrayAsync();
@@ -106,6 +123,7 @@ namespace Services.Services
                     Precio = p.Precio,
                     Codigo = p.Codigo,
                     Descripcion = p.Descripcion,
+                    Imagen = p.Imagen,
                     NombreModelo = p.IdModeloNavigation.Nombre
 
                 }).SingleOrDefaultAsync();
@@ -121,6 +139,7 @@ namespace Services.Services
                     Precio = p.Precio,
                     Codigo = p.Codigo,
                     Descripcion = p.Descripcion,
+                    Imagen = p.Imagen,
                     NombreModelo = p.IdModeloNavigation.Nombre
                 }).ToArrayAsync();
         }
@@ -134,6 +153,7 @@ namespace Services.Services
                 existingProducto.Precio = productoDtoIn.Precio;
                 existingProducto.Codigo = productoDtoIn.Codigo;
                 existingProducto.Descripcion = productoDtoIn.Descripcion;
+                existingProducto.Imagen = productoDtoIn.Imagen;
                 existingProducto.IdModelo = productoDtoIn.IdModelo;
                 await _context.SaveChangesAsync();
             }
@@ -149,5 +169,18 @@ namespace Services.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+
+        // Método para convertir el array de bytes a base64
+        public string ConvertToBase64(byte[] imageBytes)
+        {
+            if (imageBytes == null || imageBytes.Length == 0)
+            {
+                return null;  // O una cadena vacía, dependiendo de tu caso de uso
+            }
+
+            return Convert.ToBase64String(imageBytes);
+        }
+
     }
 }

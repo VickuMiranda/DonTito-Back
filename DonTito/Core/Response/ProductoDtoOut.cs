@@ -18,7 +18,7 @@ namespace Core.Response
 
         public string? Descripcion { get; set; }
 
-        public byte[]? NombreImagen { get; set; }
+        public byte[]? Imagen { get; set; }
 
         public string? NombreModelo { get; set; }
     }
