@@ -12,7 +12,7 @@ namespace Services.Interfaces
         Task<Producto> Create(ProductoDtoIn newProducto, IFormFile files);
         Task<Producto?> GetById(int id);
         Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo);
-        Task<ProductoDtoOut?> GetProductoByNombre(string nombre);
+        Task<IEnumerable<ProductoDtoOut?>> GetProductoByNombre(string nombre);
         Task<IEnumerable<ProductoDtoOut>> GetProductoByMarca(string marca);
         Task Update(int id, ProductoDtoIn productoDtoIn);
         Task Delete(int id);

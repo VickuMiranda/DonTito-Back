@@ -57,12 +57,12 @@ namespace Services.Services
         public async Task<Producto> Create(ProductoDtoIn newProductoDto, IFormFile files)
         {
 
-            var productoExistente = await GetProductoByNombre(newProductoDto.Nombre);
-            if (productoExistente != null)
-            {
-                // Si el producto ya existe, retorna el producto encontrado
-                return await _context.Producto.FindAsync(productoExistente.Id);
-            }
+            //var productoExistente = await GetProductoByNombre(newProductoDto.Nombre);
+            //if (productoExistente != null)
+            //{
+            //    // Si el producto ya existe, retorna el producto encontrado
+            //    return await _context.Producto.FindAsync(productoExistente.Id);
+            //}
 
             // Valida si se ha proporcionado un archivo de imagen
             if (files == null || files.Length == 0)
@@ -99,7 +99,7 @@ namespace Services.Services
 
 
 
-            public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
+        public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
         {
 
             return await _context.Producto
@@ -117,11 +117,11 @@ namespace Services.Services
                 }).ToArrayAsync();
         }
 
-        public async Task<ProductoDtoOut?> GetProductoByNombre(string nombre)
+        public async Task<IEnumerable<ProductoDtoOut?>> GetProductoByNombre(string nombre)
         {
 
             return await _context.Producto
-                .Where(p => p.Nombre == nombre)
+                .Where(p => p.Nombre.ToLower().Contains(nombre.ToLower()))
                 .Select(p => new ProductoDtoOut
                 {
                     Id = p.Id,
@@ -132,8 +132,9 @@ namespace Services.Services
                     Imagen = p.Imagen,
                     NombreModelo = p.IdModeloNavigation.Nombre
 
-                }).SingleOrDefaultAsync();
+                }).ToListAsync();
         }
+
         public async Task<IEnumerable<ProductoDtoOut>> GetProductoByMarca(string marca)
         {
             return await _context.Producto
