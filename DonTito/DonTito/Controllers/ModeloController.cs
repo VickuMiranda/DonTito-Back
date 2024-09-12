@@ -23,6 +23,19 @@ namespace DonTito.Controllers
             return await _service.GetModelo();
         }
 
+        [HttpGet("api/v1/modelo/nombre/{name}")]
+        public async Task<ActionResult<ModeloDtoOut>> GetModeloByName(string name)
+        {
+            var modelo = await _service.GetModeloByName(name);
+            if (modelo == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(modelo);
+            }
+        }
 
 
         [HttpGet("api/v1/modelo/{id}")]

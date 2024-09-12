@@ -10,6 +10,7 @@ namespace Services.Interfaces
         Task<ModeloDtoOut?> GetModeloDtoById(int id);
         Task<Modelo> Create(ModeloDtoIn newModelo);
         Task<Modelo?> GetById(int id);
+        Task<ModeloDtoOut?> GetModeloByName(string name);
         Task Update(int id, ModeloDtoIn modeloDtoIn);
         Task Delete(int id);
     }

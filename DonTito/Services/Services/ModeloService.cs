@@ -39,7 +39,16 @@ namespace Services.Services
                     NombreMarca = m.IdMarcaNavigation.Nombre
                 }).SingleOrDefaultAsync();
         }
-
+        public async Task<ModeloDtoOut?> GetModeloByName(string name)
+        {
+            return await _context.Modelo
+                .Where(m => m.Nombre == name)
+                .Select(m => new ModeloDtoOut
+            {
+                Nombre = m.Nombre,
+                NombreMarca = m.IdMarcaNavigation.Nombre
+            }).SingleOrDefaultAsync();
+        }
         public async Task<Modelo?> GetById(int id)
         {
             return await _context.Modelo.FindAsync(id);
