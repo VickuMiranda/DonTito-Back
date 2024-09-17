@@ -48,9 +48,12 @@ namespace Services.Services
         }
         public async Task<Pedido> Create(PedidoDtoIn newPedidoDto)
         {
+            DateTime fechaUtc = DateTime.UtcNow;
+
+
             var newPedido = new Pedido
             {
-                FechaCreacion = DateTime.Now,
+                FechaCreacion = fechaUtc,
             };
 
             // Agregar el nuevo pedido a la base de datos
