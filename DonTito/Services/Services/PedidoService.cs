@@ -46,32 +46,34 @@ namespace Services.Services
         {
             return await _context.Pedido.FindAsync(id);
         }
+
+
+
         public async Task<Pedido> Create(PedidoDtoIn newPedidoDto)
         {
             DateTime fechaUtc = DateTime.UtcNow;
 
-
-            var newPedido = new Pedido
-            {
-                FechaCreacion = fechaUtc,
-            };
+            var pedido = new Pedido();
+            pedido.FechaCreacion = fechaUtc;
+            pedido.Total = newPedidoDto.Total;
+            
 
             // Agregar el nuevo pedido a la base de datos
-            _context.Pedido.Add(newPedido);
+            _context.Pedido.Add(pedido);
             await _context.SaveChangesAsync();
 
             // Obtener los detalles de pedido asociados a este nuevo pedido
-            var pedidoDetalles = await _context.PedidoDetalle
-                .Where(pd => pd.IdPedido == newPedido.Id)
-                .ToListAsync();
+            //var pedidoDetalles = await _context.PedidoDetalle
+            //    .Where(pd => pd.IdPedido == newPedido.Id)
+            //    .ToListAsync();
 
             // Calcular el total sumando los subtotales de los detalles del pedido
-            newPedido.Total = pedidoDetalles.Sum(pd => pd.SubTotal);
+            //newPedido.Total = pedidoDetalles.Sum(pd => pd.SubTotal);
 
             // Guardar el cambio del total en la base de datos
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
-            return newPedido;
+            return pedido;
         }
 
 
