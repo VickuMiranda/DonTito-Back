@@ -59,7 +59,8 @@ namespace DonTito.Controllers
 
 
         //AGREGAR
-         [HttpPost("api/v1/agregar/producto")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("api/v1/agregar/producto")]
         [RequestSizeLimit(1_000_000)]
         public async Task<IActionResult> Create([FromForm] ProductoDtoIn productoDtoIn, IFormFile files)
          {        
@@ -69,6 +70,7 @@ namespace DonTito.Controllers
 
 
         //EDITAR
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, ProductoDtoIn productoDtoIn)
         {
@@ -90,6 +92,7 @@ namespace DonTito.Controllers
 
 
         //ELIMINAR
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
