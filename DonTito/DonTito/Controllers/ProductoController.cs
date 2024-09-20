@@ -72,7 +72,7 @@ namespace DonTito.Controllers
         //EDITAR
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("api/v1/editar/{id}")]
-        public async Task<IActionResult> Update(int id, ProductoDtoIn productoDtoIn)
+        public async Task<IActionResult> Update(int id, [FromForm] ProductoDtoIn productoDtoIn, IFormFile files)
         {
             //if (id != productoDtoIn.Id)
             //    return BadRequest(new { message = $"El ID = {id} de la URL no coincide con el ID({productoDtoIn.Id}) del cuerpo de la solicitud." });
@@ -81,7 +81,7 @@ namespace DonTito.Controllers
 
             if (productoToUpdate is not null)
             {
-                await _service.Update(id, productoDtoIn);
+                await _service.Update(id, productoDtoIn,files);
                 return NoContent();
             }
             else

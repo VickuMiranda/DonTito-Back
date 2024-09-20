@@ -56,15 +56,6 @@ namespace Services.Services
         }
         public async Task<Producto> Create(ProductoDtoIn newProductoDto, IFormFile files)
         {
-
-            //var productoExistente = await GetProductoByNombre(newProductoDto.Nombre);
-            //if (productoExistente != null)
-            //{
-            //    // Si el producto ya existe, retorna el producto encontrado
-            //    return await _context.Producto.FindAsync(productoExistente.Id);
-            //}
-
-            // Valida si se ha proporcionado un archivo de imagen
             if (files == null || files.Length == 0)
             {
                 throw new ArgumentException("No se han proporcionado imágenes.");
@@ -97,7 +88,32 @@ namespace Services.Services
         }
 
 
+        public async Task Update(int id, ProductoDtoIn productoDtoIn, IFormFile files)
+        {
+            var existingProducto = await GetById(id);
+            if (existingProducto is not null)
+            {
+            if (files == null || files.Length == 0)
+            {
+                throw new ArgumentException("No se han proporcionado imágenes.");
+            }
+                byte[] imageBytes;
+                using (var memoryStream = new MemoryStream())
+                {
+                    await files.CopyToAsync(memoryStream);
+                    imageBytes = memoryStream.ToArray();
+                }
 
+                existingProducto.Nombre = productoDtoIn.Nombre;
+                existingProducto.Precio = productoDtoIn.Precio;
+                existingProducto.Codigo = productoDtoIn.Codigo;
+                existingProducto.Descripcion = productoDtoIn.Descripcion;
+                existingProducto.Imagen = imageBytes;
+                existingProducto.IdModelo = productoDtoIn.IdModelo;
+
+                await _context.SaveChangesAsync();
+            }
+        }
 
         public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
         {
@@ -151,20 +167,7 @@ namespace Services.Services
                 }).ToArrayAsync();
         }
 
-        public async Task Update(int id, ProductoDtoIn productoDtoIn)
-        {
-            var existingProducto = await GetById(id);
-            if (existingProducto is not null)
-            {
-                existingProducto.Nombre = productoDtoIn.Nombre;
-                existingProducto.Precio = productoDtoIn.Precio;
-                existingProducto.Codigo = productoDtoIn.Codigo;
-                existingProducto.Descripcion = productoDtoIn.Descripcion;
-                existingProducto.Imagen = productoDtoIn.Imagen;
-                existingProducto.IdModelo = productoDtoIn.IdModelo;
-                await _context.SaveChangesAsync();
-            }
-        }
+     
 
         public async Task Delete(int id)
         {
