@@ -19,7 +19,7 @@ namespace Services.Services
             {
                 Id = u.Id,
                 Email = u.Email,
-                Contrasenia = u.Contrasenia
+                Password = u.Password
             }).ToArrayAsync();
         }
 
@@ -31,7 +31,7 @@ namespace Services.Services
                 {
                     Id = u.Id,
                     Email = u.Email,
-                    Contrasenia = u.Contrasenia
+                    Password = u.Password
                 }).SingleOrDefaultAsync();
         }
 
@@ -44,7 +44,7 @@ namespace Services.Services
             var newUsuario = new Usuario();
 
             newUsuario.Email = newUsuarioDto.Email;
-            newUsuario.Contrasenia = newUsuarioDto.Contrasenia;
+            newUsuario.Password = newUsuarioDto.Contrasenia;
 
             _context.Usuario.Add(newUsuario);
             await _context.SaveChangesAsync();
@@ -60,7 +60,7 @@ namespace Services.Services
             if (existingUsuario is not null)
             {
                 existingUsuario.Email = usuarioDtoIn.Email;
-                existingUsuario.Contrasenia = usuarioDtoIn.Contrasenia;
+                existingUsuario.Password = usuarioDtoIn.Contrasenia;
                 await _context.SaveChangesAsync();
             }
         }

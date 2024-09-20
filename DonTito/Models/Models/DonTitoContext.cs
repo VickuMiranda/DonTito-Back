@@ -133,7 +133,7 @@ public partial class DonTitoContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasIdentityOptions(null, null, null, 99999L, null, null)
                 .HasColumnName("id");
-            entity.Property(e => e.Contrasenia)
+            entity.Property(e => e.Password)
                 .IsRequired()
                 .HasColumnName("contrasenia");
             entity.Property(e => e.Email)
