@@ -45,6 +45,7 @@ namespace Services.Services
                 .Where(m => m.Nombre == name)
                 .Select(m => new ModeloDtoOut
             {
+                Id = m.Id,
                 Nombre = m.Nombre,
                 NombreMarca = m.IdMarcaNavigation.Nombre
             }).SingleOrDefaultAsync();
