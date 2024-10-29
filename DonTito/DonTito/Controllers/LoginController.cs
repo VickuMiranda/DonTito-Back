@@ -28,7 +28,7 @@ namespace DonTito.Controllers
             var newregistro = new Usuario
             {
                 Email = usuario.Email,
-                Password = _utilidades.encriptarSHA256(usuario.Password)
+                Password = _utilidades.EncriptarSHA256(usuario.Password!)
             };
             await _context.Usuario.AddAsync(newregistro);
             await _context.SaveChangesAsync();
@@ -44,18 +44,18 @@ namespace DonTito.Controllers
         }
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login(LoginDtoOut login)
+        public async Task<IActionResult> Login(UsuarioDtoOut login)
         {
             var usuarioEncontrado = await _context.Usuario.Where(u => 
                                                                     u.Email == login.Email && 
-                                                                    u.Password == _utilidades.encriptarSHA256(login.Password)).FirstOrDefaultAsync();
+                                                                    u.Password == _utilidades.EncriptarSHA256(login.Password!)).FirstOrDefaultAsync();
             if (usuarioEncontrado == null)
             {
                 return StatusCode(StatusCodes.Status200OK, new { isSuccess = false, token="" });
             }
             else
             {
-                return StatusCode(StatusCodes.Status200OK, new { isSuccess = true, token = _utilidades.generarJWT(usuarioEncontrado) });
+                return StatusCode(StatusCodes.Status200OK, new { isSuccess = true, token = _utilidades.GenerarJWT(usuarioEncontrado) });
             }
         }
     }
