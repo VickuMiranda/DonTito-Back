@@ -69,10 +69,31 @@ namespace DonTito.Controllers
          }
 
 
+        ////EDITAR
+        ////[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[HttpPut("api/v1/editar/{id}")]
+        //public async Task<IActionResult> Update(int id, [FromForm] ProductoDtoIn productoDtoIn, IFormFile files)
+        //{
+        //    //if (id != productoDtoIn.Id)
+        //    //    return BadRequest(new { message = $"El ID = {id} de la URL no coincide con el ID({productoDtoIn.Id}) del cuerpo de la solicitud." });
+
+        //    var productoToUpdate = await _service.GetProductoDtoById(id);
+
+        //    if (productoToUpdate is not null)
+        //    {
+        //        await _service.Update(id, productoDtoIn,files);
+        //        return NoContent();
+        //    }
+        //    else
+        //    {
+        //        return NotFound(id);
+        //    }
+        //}
+
         //EDITAR
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("api/v1/editar/{id}")]
-        public async Task<IActionResult> Update(int id, [FromForm] ProductoDtoIn productoDtoIn, IFormFile files)
+        public async Task<IActionResult> Update(int id, [FromForm] ProductoUpdateDto productoUpdateDto)
         {
             //if (id != productoDtoIn.Id)
             //    return BadRequest(new { message = $"El ID = {id} de la URL no coincide con el ID({productoDtoIn.Id}) del cuerpo de la solicitud." });
@@ -81,7 +102,7 @@ namespace DonTito.Controllers
 
             if (productoToUpdate is not null)
             {
-                await _service.Update(id, productoDtoIn,files);
+                await _service.Update(id, productoUpdateDto);
                 return NoContent();
             }
             else
@@ -89,6 +110,8 @@ namespace DonTito.Controllers
                 return NotFound(id);
             }
         }
+
+
 
 
         //ELIMINAR
