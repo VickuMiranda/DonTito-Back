@@ -88,32 +88,53 @@ namespace Services.Services
         }
 
 
-        public async Task Update(int id, ProductoDtoIn productoDtoIn, IFormFile files)
+        //public async Task Update(int id, ProductoDtoIn productoDtoIn, IFormFile files)
+        //{
+        //    var existingProducto = await GetById(id);
+        //    if (existingProducto is not null)
+        //    {
+        //    if (files == null || files.Length == 0)
+        //    {
+        //        throw new ArgumentException("No se han proporcionado imágenes.");
+        //    }
+        //        byte[] imageBytes;
+        //        using (var memoryStream = new MemoryStream())
+        //        {
+        //            await files.CopyToAsync(memoryStream);
+        //            imageBytes = memoryStream.ToArray();
+        //        }
+
+        //        existingProducto.Nombre = productoDtoIn.Nombre;
+        //        existingProducto.Precio = productoDtoIn.Precio;
+        //        existingProducto.Codigo = productoDtoIn.Codigo;
+        //        existingProducto.Descripcion = productoDtoIn.Descripcion;
+        //        existingProducto.Imagen = imageBytes;
+        //        existingProducto.IdModelo = productoDtoIn.IdModelo;
+
+        //        await _context.SaveChangesAsync();
+        //    }
+        //}
+        // EDITAR CON IMAGEN Y TODOS SUS ATRIBUTOS, PARA HACER DESPUES
+
+        public async Task Update(int id, ProductoUpdateDto productoUpdateDto)
         {
             var existingProducto = await GetById(id);
             if (existingProducto is not null)
             {
-            if (files == null || files.Length == 0)
-            {
-                throw new ArgumentException("No se han proporcionado imágenes.");
-            }
-                byte[] imageBytes;
-                using (var memoryStream = new MemoryStream())
-                {
-                    await files.CopyToAsync(memoryStream);
-                    imageBytes = memoryStream.ToArray();
-                }
-
-                existingProducto.Nombre = productoDtoIn.Nombre;
-                existingProducto.Precio = productoDtoIn.Precio;
-                existingProducto.Codigo = productoDtoIn.Codigo;
-                existingProducto.Descripcion = productoDtoIn.Descripcion;
-                existingProducto.Imagen = imageBytes;
-                existingProducto.IdModelo = productoDtoIn.IdModelo;
+                // Solo actualizar el título, descripción y precio
+                existingProducto.Nombre = productoUpdateDto.Nombre;
+                existingProducto.Descripcion = productoUpdateDto.Descripcion;
+                existingProducto.Precio = productoUpdateDto.Precio;
 
                 await _context.SaveChangesAsync();
             }
+            else
+            {
+                throw new KeyNotFoundException("El producto no fue encontrado.");
+            }
         }
+
+
 
         public async Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo)
         {

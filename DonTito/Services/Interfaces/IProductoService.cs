@@ -14,7 +14,8 @@ namespace Services.Interfaces
         Task<IEnumerable<ProductoDtoOut>> GetProductoByModelo(string modelo);
         Task<IEnumerable<ProductoDtoOut?>> GetProductoByNombre(string nombre);
         Task<IEnumerable<ProductoDtoOut>> GetProductoByMarca(string marca);
-        Task Update(int id, ProductoDtoIn productoDtoIn, IFormFile files);
+        //Task Update(int id, ProductoDtoIn productoDtoIn, IFormFile files); con imagen
+        Task Update(int id, ProductoUpdateDto productoUpdateDto);
         Task Delete(int id);
     }
 }
