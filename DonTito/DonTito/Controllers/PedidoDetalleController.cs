@@ -39,6 +39,12 @@ namespace DonTito.Controllers
             }
         }
 
+        //Buscar Por modelo
+        [HttpGet("api/v1/pedidoDetalle/buscarPedido/{pedido}")]
+        public async Task<IEnumerable<PedidoDetalleDtoOut?>> GetPedidoDetalleByPedido(int pedido)
+        {
+            return await _service.GetPedidoDetalleByPedido(pedido);
+        }
 
         //AGREGAR
         [HttpPost("api/v1/agregar/pedidoDetalle")]

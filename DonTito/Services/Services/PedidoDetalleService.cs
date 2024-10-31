@@ -46,6 +46,22 @@ namespace Services.Services
                 }).SingleOrDefaultAsync();
         }
 
+
+        public async Task<IEnumerable<PedidoDetalleDtoOut?>> GetPedidoDetalleByPedido(int pedido)
+        {
+            return await _context.PedidoDetalle
+                .Where(p => p.IdPedidoNavigation.Numero == pedido)
+                .Select(p => new PedidoDetalleDtoOut
+            {
+                Id = p.Id,
+                Cantidad = p.Cantidad,
+                SubTotal = p.SubTotal,
+                NombreProducto = p.IdProductoNavigation.Nombre,
+                NumeroPedido = p.IdPedidoNavigation.Numero
+            }).ToListAsync();
+        }
+
+
         public async Task<PedidoDetalle?> GetById(int id)
         {
             return await _context.PedidoDetalle.FindAsync(id);

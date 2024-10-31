@@ -12,5 +12,6 @@ namespace Services.Interfaces
         Task<PedidoDetalle?> GetById(int id);
         Task Update(int id, PedidoDetalleDtoIn pedidoDetalleDtoIn);
         Task Delete(int id);
+        Task<IEnumerable<PedidoDetalleDtoOut?>> GetPedidoDetalleByPedido(int pedido);
     }
 }
