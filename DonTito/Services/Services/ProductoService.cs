@@ -54,6 +54,7 @@ namespace Services.Services
         {
             return await _context.Producto.FindAsync(id);
         }
+
         public async Task<Producto> Create(ProductoDtoIn newProductoDto, IFormFile files)
         {
             if (files == null || files.Length == 0)
@@ -81,11 +82,20 @@ namespace Services.Services
             };
 
             // Agrega el nuevo producto a la base de datos y guarda los cambios
-            _context.Producto.Add(newProducto);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Producto.Add(newProducto);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones aquí, tal vez loguear el error
+                throw new Exception("Error al guardar el producto en la base de datos.", ex);
+            }
 
             return newProducto;
         }
+
 
 
         //public async Task Update(int id, ProductoDtoIn productoDtoIn, IFormFile files)
