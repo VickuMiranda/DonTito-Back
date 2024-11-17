@@ -20,7 +20,7 @@ namespace Services.Services
         }
         public async Task<IEnumerable<PedidoDtoOut>> GetPedido()
         {
-            return await _context.Pedido.Select(p => new PedidoDtoOut
+            return await _context.Pedido.OrderByDescending(p => p.Id).Select(p => new PedidoDtoOut
             {
                 Id = p.Id,
                 Numero = p.Numero,
