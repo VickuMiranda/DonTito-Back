@@ -45,6 +45,10 @@ namespace Services.Services
         public async Task<Marca> Create(MarcaDtoIn newMarcaDto)
         {
             var newMarca = new Marca();
+            if (string.IsNullOrWhiteSpace(newMarcaDto.Nombre))
+            {
+                throw new ArgumentException("El nombre de la marca no puede estar vacío.");
+            }
 
             newMarca.Nombre = newMarcaDto.Nombre;
 

@@ -56,6 +56,10 @@ namespace Services.Services
         }
         public async Task<Modelo> Create(ModeloDtoIn newModeloDto)
         {
+            if (string.IsNullOrWhiteSpace(newModeloDto.Nombre))
+            {
+                throw new ArgumentException("El nombre de la marca no puede estar vacío.");
+            }
             var newModelo = new Modelo();
 
             newModelo.Nombre = newModeloDto.Nombre;

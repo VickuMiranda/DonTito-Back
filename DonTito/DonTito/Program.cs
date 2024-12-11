@@ -98,8 +98,8 @@ builder.Services.AddSwaggerGen(c =>
 
 
 //BDContext
-builder.Services.AddDbContext<DonTitoContext>(option =>
-option.UseNpgsql(builder.Configuration.GetConnectionString("Conection")));
+builder.Services.AddDbContext<DonTitoContext>(options =>
+options.UseNpgsql(builder.Configuration.GetConnectionString("Conection")), ServiceLifetime.Transient);
 
 //MANEJADOR DE INTERFACES
 
