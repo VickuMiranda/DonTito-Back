@@ -1,4 +1,5 @@
 ﻿using Core.Request;
+using Core.Response;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
 using Services.Services;
@@ -60,38 +61,46 @@ namespace ModeloTest
             Assert.Equal("El nombre de la marca no puede estar vacío.", exception.Message);
         }
         [Fact]
-        public async Task ListarTodasLasMarcasCorrectamente()
+        public async Task ListarTodasLasModelosCorrectamente()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<DonTitoContext>()
-                .UseInMemoryDatabase(databaseName: "TestDB_ListarMarcas")
+                .UseInMemoryDatabase(databaseName: "TestDB_ListarModelos")
                 .Options;
 
             using (var context = new DonTitoContext(options))
             {
-                // Precargar datos en la base de datos en memoria
+                // Precargar datos relacionados en la base de datos en memoria
                 context.Marca.AddRange(
-                    new Marca { Id = 1, Nombre = "Marca1" },
-                    new Marca { Id = 2, Nombre = "Marca2" },
-                    new Marca { Id = 3, Nombre = "Marca3" }
+                    new Marca { Id = 3, Nombre = "Marca3" },
+                    new Marca { Id = 4, Nombre = "Marca4" },
+                    new Marca { Id = 5, Nombre = "Marca5" }
                 );
+
+                context.Modelo.AddRange(
+                    new Modelo { Id = 1, Nombre = "Modelo1", IdMarca = 3 },
+                    new Modelo { Id = 2, Nombre = "Modelo2", IdMarca = 4 },
+                    new Modelo { Id = 3, Nombre = "Modelo3", IdMarca = 5 }
+                );
+
                 await context.SaveChangesAsync();
             }
 
             using (var context = new DonTitoContext(options))
             {
-                var sut = new MarcaService(context);
+                var sut = new ModeloService(context);
 
                 // Act
-                var resultado = await sut.GetMarca();
+                var resultado = await sut.GetModelo();
 
                 // Assert
                 Assert.NotNull(resultado);
-                Assert.Equal(3, resultado.Count()); // Verificar que se devuelven 3 marcas
-                Assert.Contains(resultado, m => m.Nombre == "Marca1");
-                Assert.Contains(resultado, m => m.Nombre == "Marca2");
-                Assert.Contains(resultado, m => m.Nombre == "Marca3");
+                Assert.Equal(3, resultado.Count()); // Verificar que se devuelven 3 modelos
+                Assert.Contains(resultado, m => m.Nombre == "Modelo1" && m.NombreMarca == "Marca3");
+                Assert.Contains(resultado, m => m.Nombre == "Modelo2" && m.NombreMarca == "Marca4");
+                Assert.Contains(resultado, m => m.Nombre == "Modelo3" && m.NombreMarca == "Marca5");
             }
         }
+    
     }
 }
