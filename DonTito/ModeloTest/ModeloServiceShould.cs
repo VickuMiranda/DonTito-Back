@@ -14,7 +14,7 @@ namespace ModeloTest
     public class ModeloServiceShould
     {
         [Fact]
-        public void CrearMarcaCorrectamente()
+        public void CrearModeloCorrectamente()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<DonTitoContext>()
@@ -38,8 +38,9 @@ namespace ModeloTest
             Assert.NotNull(modeloCreada);
             Assert.Equal("Mak", modeloCreada.Nombre);
         }
+
         [Fact]
-        public async Task NoCrearMarcaConNombreVacio()
+        public async Task NoCrearModeloConNombreVacio()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<DonTitoContext>()
@@ -58,10 +59,11 @@ namespace ModeloTest
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => sut.Create(modeloDtoIn));
 
-            Assert.Equal("El nombre de la marca no puede estar vacío.", exception.Message);
+            Assert.Equal("El nombre del modelo no puede estar vacío.", exception.Message);
         }
+
         [Fact]
-        public async Task ListarTodasLasModelosCorrectamente()
+        public async Task ListarTodasLosModelosCorrectamente()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<DonTitoContext>()

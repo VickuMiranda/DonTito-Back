@@ -87,6 +87,36 @@ namespace ModeloTest
                 Assert.Contains(resultado, m => m.Nombre == "Marca3");
             }
         }
+
+        [Fact]
+        public async Task ActualizarMarcaCorrectamente()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<DonTitoContext>()
+                .UseInMemoryDatabase(databaseName: "TestDB_UpdateMarca")
+                .Options;
+
+            using (var context = new DonTitoContext(options))
+            {
+                var marca = new Marca { Id = 1, Nombre = "NombreAntiguo" };
+                context.Marca.Add(marca);
+                await context.SaveChangesAsync();
+            }
+
+            using (var context = new DonTitoContext(options))
+            {
+                var sut = new MarcaService(context);
+                var updatedMarcaDto = new MarcaDtoIn { Nombre = "NombreNuevo" };
+
+                // Act
+                await sut.Update(1, updatedMarcaDto);
+
+                // Assert
+                var marcaActualizada = context.Marca.FirstOrDefault(m => m.Id == 1);
+                Assert.NotNull(marcaActualizada);
+                Assert.Equal("NombreNuevo", marcaActualizada.Nombre);
+            }
+        }
     }
 }
 
