@@ -113,7 +113,7 @@ namespace ModeloTest
                 IdModelo = 2
             };
 
-            IFormFile files = null; // No se pasa imagen
+            IFormFile files = null; 
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => sut.Create(productoDtoIn, files));

@@ -61,7 +61,7 @@ namespace ModeloTest
             Assert.Equal("El mail no puede estar vacío.", exception.Message);
         }
         [Fact]
-        public async Task ListarTodasLasUsuariosCorrectamente()
+        public async Task ListarTodasLosUsuariosCorrectamente()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<DonTitoContext>()
