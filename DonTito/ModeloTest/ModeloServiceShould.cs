@@ -58,7 +58,7 @@ namespace ModeloTest
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => sut.Create(modeloDtoIn));
 
-            Assert.Equal("El nombre de la marca no puede estar vacío.", exception.Message);
+            Assert.Equal("El nombre del modelo no puede estar vacío.", exception.Message);
         }
         [Fact]
         public async Task ListarTodasLasModelosCorrectamente()

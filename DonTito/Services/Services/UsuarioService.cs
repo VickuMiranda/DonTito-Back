@@ -41,6 +41,10 @@ namespace Services.Services
         }
         public async Task<Usuario> Create(UsuarioDtoIn newUsuarioDto)
         {
+            if (string.IsNullOrWhiteSpace(newUsuarioDto.Email))
+            {
+                throw new ArgumentException("El mail no puede estar vacío.");
+            }
             var newUsuario = new Usuario();
 
             newUsuario.Email = newUsuarioDto.Email;

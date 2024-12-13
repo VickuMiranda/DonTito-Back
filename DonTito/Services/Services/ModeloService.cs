@@ -58,7 +58,7 @@ namespace Services.Services
         {
             if (string.IsNullOrWhiteSpace(newModeloDto.Nombre))
             {
-                throw new ArgumentException("El nombre de la marca no puede estar vacío.");
+                throw new ArgumentException("El nombre del modelo no puede estar vacío.");
             }
             var newModelo = new Modelo();
 
