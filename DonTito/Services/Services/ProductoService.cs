@@ -61,6 +61,10 @@ namespace Services.Services
             {
                 throw new ArgumentException("No se han proporcionado imágenes.");
             }
+            if (string.IsNullOrWhiteSpace(newProductoDto.Nombre))
+            {
+                throw new ArgumentException("El Nombre no puede estar vacío.");
+            }
 
             // Convierte el archivo de imagen a un array de bytes
             byte[] imageBytes;
